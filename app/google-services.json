@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "463396250592-l1h2ihjmbtdufdmf9h6pkevvo1brjc2k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.divak.authentication",
+            "certificate_hash": "006c87c54bdbd0a98cf3dd548b55975c2cd07999"
+          }
+        },
+        {
           "client_id": "463396250592-5hi9oeq62235g7loucmasmbhd9tg239j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
