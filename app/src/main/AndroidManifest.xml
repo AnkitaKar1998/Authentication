@@ -20,15 +20,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".WelcomeActivity" />
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification"/>
+        <activity android:name=".TeacherActivity" />
 
         <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
+        <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent"/>
-        <activity android:name=".ResetActivity"/>
+            android:resource="@color/colorAccent" />
+
+        <activity android:name=".ResetActivity" />
+        <activity android:name=".StudentActivity"></activity>
     </application>
 
 </manifest>

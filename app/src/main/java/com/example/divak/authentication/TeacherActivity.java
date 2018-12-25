@@ -2,25 +2,20 @@ package com.example.divak.authentication;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class TeacherActivity extends AppCompatActivity {
    // Button btnLogout;
     TextView tvInfo;
     FirebaseAuth firebaseAuth;
@@ -30,7 +25,7 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
+        setContentView(R.layout.activity_teacher);
 
        // btnLogout = (Button)findViewById(R.id.btnLogout);
         tvInfo =(TextView)findViewById(R.id.tvInfo);
@@ -59,16 +54,16 @@ public class WelcomeActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.menuLogout) {
             firebaseAuth.signOut();
-            Intent i=new Intent(WelcomeActivity.this,MainActivity.class);
+            Intent i=new Intent(TeacherActivity.this,MainActivity.class);
             startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void RequestNewGroup() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(WelcomeActivity.this,R.style.AlertDialog);
+        AlertDialog.Builder builder=new AlertDialog.Builder(TeacherActivity.this,R.style.AlertDialog);
         builder.setTitle("Create a New Group");
-        final EditText groupNameField = new EditText(WelcomeActivity.this);
+        final EditText groupNameField = new EditText(TeacherActivity.this);
         groupNameField.setHint("eg. Friends");
         builder.setView(groupNameField);
         builder.setCancelable(false);
@@ -79,7 +74,7 @@ public class WelcomeActivity extends AppCompatActivity {
                String groupName=groupNameField.getText().toString();
                 if(TextUtils.isEmpty(groupName))
                 {
-                    Toast.makeText(WelcomeActivity.this, "Enter Message First ...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TeacherActivity.this, "Enter Message First ...", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {

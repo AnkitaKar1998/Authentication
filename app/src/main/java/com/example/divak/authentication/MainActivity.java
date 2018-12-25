@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                             CurrentUserId =firebaseAuth.getCurrentUser().getUid();
                             RootRef.child("Users").child(CurrentUserId).setValue("");
                             Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
-                            Intent i=new Intent(MainActivity.this,WelcomeActivity.class);
+                            Intent i=new Intent(MainActivity.this,TeacherActivity.class);
                             startActivity(i);
                             finish();
                         }
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if((user!=null))
         {
-            Intent i=new Intent(MainActivity.this,WelcomeActivity.class);
+            Intent i=new Intent(MainActivity.this,TeacherActivity.class);
             startActivity(i);
             finish();
         }
