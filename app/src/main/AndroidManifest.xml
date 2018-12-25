@@ -30,7 +30,8 @@
             android:resource="@color/colorAccent" />
 
         <activity android:name=".ResetActivity" />
-        <activity android:name=".StudentActivity"></activity>
+        <activity android:name=".StudentActivity" />
+        <activity android:name=".TeacherChatActivity"></activity>
     </application>
 
 </manifest>
