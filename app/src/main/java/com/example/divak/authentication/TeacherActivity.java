@@ -5,21 +5,25 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class TeacherActivity extends AppCompatActivity {
    // Button btnLogout;
-    TextView tvInfo;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
+    RecyclerView recyclerview;
+    String[] i = {"Class 1","Class 2","Class3"};
 
 
     @Override
@@ -28,12 +32,12 @@ public class TeacherActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teacher);
 
        // btnLogout = (Button)findViewById(R.id.btnLogout);
-        tvInfo =(TextView)findViewById(R.id.tvInfo);
+        //tvInfo =(TextView)findViewById(R.id.tvInfo);
         firebaseAuth=FirebaseAuth.getInstance();
 
 
         String email=firebaseAuth.getCurrentUser().getEmail();
-        tvInfo.setText("Welcome" +email);
+        //tvInfo.setText("Welcome" +email);
 
     }
     //Inflate The Menu
@@ -47,6 +51,9 @@ public class TeacherActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        recyclerview = (RecyclerView) findViewById(R.id.rcv);
+        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        recyclerview.setAdapter(new RecyclerViewAdapter(this,i));
         if (item.getItemId() == R.id.menuCreateGroup) {
             Toast.makeText(this, "Developed By Divakar Pandey", Toast.LENGTH_SHORT).show();
             RequestNewGroup();
@@ -71,14 +78,14 @@ public class TeacherActivity extends AppCompatActivity {
         builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               String groupName=groupNameField.getText().toString();
+                String groupName=groupNameField.getText().toString();
                 if(TextUtils.isEmpty(groupName))
                 {
                     Toast.makeText(TeacherActivity.this, "Enter Message First ...", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                 CreateNewGroup();
+                    CreateNewGroup();
                 }
             }
         });
@@ -93,6 +100,9 @@ public class TeacherActivity extends AppCompatActivity {
         AlertDialog ad=builder.create();
         ad.show();
     }
+
+
+
 
 
 
