@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnSignIn,btnReset;
     //Button btnSignUp;
     EditText etEmail,etPassword;
+    RadioGroup loginAs;
+
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     private DatabaseReference RootRef;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         btnReset =(Button)findViewById(R.id.btnReset);
         etEmail =(EditText)findViewById(R.id.etEmail);
         etPassword =(EditText)findViewById(R.id.etPassword);
+        loginAs = (RadioGroup) findViewById(R.id.rg_loginAs);
+
         //firebase part
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -68,18 +73,23 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final int selectedId = loginAs.getCheckedRadioButtonId();
                 String e=etEmail.getText().toString();
                 String p=etPassword.getText().toString();
                 firebaseAuth.signInWithEmailAndPassword(e,p).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful())
-                        {
+                        if(task.isSuccessful()) {
                             CurrentUserId =firebaseAuth.getCurrentUser().getUid();
                             RootRef.child("Users").child(CurrentUserId).setValue("");
                             Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
-                            Intent i=new Intent(MainActivity.this,TeacherActivity.class);
-                            startActivity(i);
+                            if(selectedId == R.id.rb_teacher) {
+                                Intent i=new Intent(MainActivity.this,TeacherActivity.class);
+                                startActivity(i);
+                            } else {
+                                Intent i=new Intent(MainActivity.this,StudentActivity.class);
+                                startActivity(i);
+                            }
                             finish();
                         }
                         else
