@@ -32,12 +32,14 @@ public class TeacherActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teacher);
 
        // btnLogout = (Button)findViewById(R.id.btnLogout);
-        //tvInfo =(TextView)findViewById(R.id.tvInfo);
         firebaseAuth=FirebaseAuth.getInstance();
 
 
         String email=firebaseAuth.getCurrentUser().getEmail();
-        //tvInfo.setText("Welcome" +email);
+
+        recyclerview = (RecyclerView) findViewById(R.id.rcv);
+        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        recyclerview.setAdapter(new RecyclerViewAdapter(this,i));
 
     }
     //Inflate The Menu
@@ -50,10 +52,6 @@ public class TeacherActivity extends AppCompatActivity {
     //Menu Item Selected Listener
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        recyclerview = (RecyclerView) findViewById(R.id.rcv);
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.setAdapter(new RecyclerViewAdapter(this,i));
         if (item.getItemId() == R.id.menuCreateGroup) {
             Toast.makeText(this, "Developed By Divakar Pandey", Toast.LENGTH_SHORT).show();
             RequestNewGroup();

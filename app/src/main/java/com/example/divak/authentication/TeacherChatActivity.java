@@ -33,10 +33,13 @@ public class TeacherChatActivity extends AppCompatActivity {
                 String msg = message.getText().toString();
                 message.getText().clear();
 
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 TextView textView = new TextView(TeacherChatActivity.this);
                 textView.setText(msg);
                 textView.setBackgroundColor(Color.parseColor("#f4ccc1"));
-                textView.setGravity(Gravity.CENTER);
+                params.setMargins(10,10,10,10);
+                params.gravity = Gravity.CENTER;
+                textView.setLayoutParams(params);
                 teacherChatSection.addView(textView);
             }
         });
