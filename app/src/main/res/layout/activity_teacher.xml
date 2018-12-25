@@ -3,12 +3,34 @@
     android:id="@+id/activity_teacher"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.divak.authentication.TeacherActivity">
+    tools:context="com.example.divak.authentication.TeacherActivity"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rcv"
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/rcv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--/>-->
+
+    <TextView
+        android:id="@+id/it_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:text="IT"
+        android:textSize="30sp"/>
+
+    <TextView
+        android:id="@+id/comps_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="comps"
+        android:textSize="30sp"/>
+
+    <TextView
+        android:id="@+id/extc_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EXTC"
+        android:textSize="30sp"/>
 
 </LinearLayout>

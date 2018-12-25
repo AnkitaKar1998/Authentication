@@ -9,16 +9,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 //import com.example.divak.authentication.R
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.Items> {
     Context context;
     String[] item;
+    ClickListner clickListner;
 
     public RecyclerViewAdapter(Context context, String[] item){
         this.context=context;
         this.item=item;
     }
+
+    interface ClickListner{
+        public void onClick(int position);
+    }
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Items onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View row = inflater.inflate(R.layout.items_layout,parent,false );
         Items i = new Items(row);
@@ -26,9 +31,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((Items)holder).textView.setText(item[position]);
-
+    public void onBindViewHolder(Items holder, int position) {
+        holder.textView.setText(item[position]);
     }
 
     @Override
@@ -41,6 +45,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public Items(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.rectxtview);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListner.onClick(0);
+                }
+            });
         }
+
     }
 }

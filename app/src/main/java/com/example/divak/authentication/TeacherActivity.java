@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +24,9 @@ public class TeacherActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     RecyclerView recyclerview;
-    String[] i = {"Class 1","Class 2","Class3"};
+    String[] i = {"IT","comps","EXTC"};
+
+    TextView itdep,comps,extc;
 
 
     @Override
@@ -34,6 +37,52 @@ public class TeacherActivity extends AppCompatActivity {
        // btnLogout = (Button)findViewById(R.id.btnLogout);
         //tvInfo =(TextView)findViewById(R.id.tvInfo);
         firebaseAuth=FirebaseAuth.getInstance();
+
+        itdep=findViewById(R.id.it_tv);
+        comps=findViewById(R.id.comps_tv);
+        extc=findViewById(R.id.extc_tv);
+
+
+
+//        recyclerview = (RecyclerView) findViewById(R.id.rcv);
+//        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerview.setAdapter(new RecyclerViewAdapter(this,i));
+//
+//        RecyclerViewAdapter.ClickListner clickListner=new RecyclerViewAdapter.ClickListner() {
+//            @Override
+//            public void onClick(int position) {
+//                Intent intent=new Intent(getBaseContext(),TeacherChatActivity.class);
+//                intent.putExtra("Gname",i[0]);
+//                startActivity(intent);
+//            }
+//        };
+
+        itdep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getBaseContext(),TeacherChatActivity.class);
+                intent.putExtra("Gname","IT");
+                startActivity(intent);
+            }
+        });
+
+        comps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getBaseContext(),TeacherChatActivity.class);
+                intent.putExtra("Gname","comps");
+                startActivity(intent);
+            }
+        });
+
+        extc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getBaseContext(),TeacherChatActivity.class);
+                intent.putExtra("Gname","EXTC");
+                startActivity(intent);
+            }
+        });
 
 
         String email=firebaseAuth.getCurrentUser().getEmail();
@@ -51,9 +100,7 @@ public class TeacherActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        recyclerview = (RecyclerView) findViewById(R.id.rcv);
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.setAdapter(new RecyclerViewAdapter(this,i));
+
         if (item.getItemId() == R.id.menuCreateGroup) {
             Toast.makeText(this, "Developed By Divakar Pandey", Toast.LENGTH_SHORT).show();
             RequestNewGroup();

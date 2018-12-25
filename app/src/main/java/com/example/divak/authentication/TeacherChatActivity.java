@@ -1,6 +1,7 @@
 package com.example.divak.authentication;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ public class TeacherChatActivity extends AppCompatActivity {
     Button sendButton;
     EditText message;
     LinearLayout teacherChatSection;
+    String Gname;
     private DatabaseReference mDatabase =FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -35,6 +37,9 @@ public class TeacherChatActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.send_button);
         message = findViewById(R.id.et_message);
         teacherChatSection = findViewById(R.id.ll_teacher_chat_section);
+
+        Intent intent=getIntent();
+        Gname=intent.getStringExtra("Gname");
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +53,7 @@ public class TeacherChatActivity extends AppCompatActivity {
                 textView.setGravity(Gravity.CENTER);
                 teacherChatSection.addView(textView);
                 String id=mDatabase.push().getKey();
-                mDatabase.child("groups").child("IT").child(id).setValue(msg);
+                mDatabase.child("groups").child(Gname).child(id).setValue(msg);
             }
         });
 
@@ -57,7 +62,7 @@ public class TeacherChatActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mDatabase.child("groups").child("IT").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("groups").child(Gname).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 teacherChatSection.removeAllViews();
