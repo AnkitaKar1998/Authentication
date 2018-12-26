@@ -45,12 +45,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public Items(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.rectxtview);
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickListner.onClick(0);
-                }
-            });
+//            textView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    clickListner.onClick(0);
+//                }
+//            });
         }
 
     }
