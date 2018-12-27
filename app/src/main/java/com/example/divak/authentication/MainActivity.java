@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 //                            });
                             Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
                             if(selectedId == R.id.rb_teacher) {
-                                Intent i=new Intent(MainActivity.this,TeacherChatActivity.class);
+                                Intent i=new Intent(MainActivity.this,TeacherActivity.class);
                                 startActivity(i);
                             } else {
                                 Intent i=new Intent(MainActivity.this,StudentActivity.class);
