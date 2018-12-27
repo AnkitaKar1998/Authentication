@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -42,26 +43,32 @@ public class TeacherChatActivity extends AppCompatActivity {
             Gname = intent.getStringExtra("Department");
 
 
-            sendButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String msg = message.getText().toString();
-                    message.getText().clear();
-
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    TextView textView = new TextView(TeacherChatActivity.this);
-                    textView.setText(msg);
-                    textView.setBackgroundColor(Color.parseColor("#f4ccc1"));
-                    params.setMargins(10, 10, 10, 10);
-                    params.gravity = Gravity.CENTER;
-                    textView.setLayoutParams(params);
-                    teacherChatSection.addView(textView);
-                    String id = mDatabase.push().getKey();
-                    mDatabase.child("groups").child(Gname).child(id).setValue(msg);
-                }
-            });
-
-        }
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String msg = message.getText().toString();
+                message.getText().clear();
+                TextView textView = new TextView(TeacherChatActivity.this);
+                LinearLayout.LayoutParams txtlayParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                textView.setLayoutParams(txtlayParams);
+                txtlayParams.setMargins(5,5,5,5);
+                textView.setPadding(5,5,5,5);
+                textView.setTextSize(20);
+                textView.setText(msg);
+                textView.setBackgroundColor(Color.parseColor("#f2f2f2"));
+                textView.setGravity(Gravity.CENTER);
+                teacherChatSection.addView(textView);
+                String id=mDatabase.push().getKey();
+                mDatabase.child("groups").child(Gname).child(id).setValue(msg);
+                final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollView));
+                scrollview.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                });
+            }
+        });
 
     }
 
@@ -76,10 +83,22 @@ public class TeacherChatActivity extends AppCompatActivity {
                     String msg=data.getValue(String.class);
                     Log.d("msg","messages in the activity from firebase: "+msg);
                     TextView textView = new TextView(TeacherChatActivity.this);
+                    LinearLayout.LayoutParams txtlayParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    textView.setLayoutParams(txtlayParams);
+                    txtlayParams.setMargins(5,5,5,5);
+                    textView.setPadding(5,5,5,5);
+                    textView.setTextSize(20);
                     textView.setText(msg);
-                    textView.setBackgroundColor(Color.parseColor("#f4ccc1"));
+                    textView.setBackgroundColor(Color.parseColor("#f2f2f2"));
                     textView.setGravity(Gravity.CENTER);
                     teacherChatSection.addView(textView);
+                    final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollView));
+                    scrollview.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+                        }
+                    });
                 }
             }
 
@@ -89,4 +108,5 @@ public class TeacherChatActivity extends AppCompatActivity {
             }
         });
     }
+}
 }
