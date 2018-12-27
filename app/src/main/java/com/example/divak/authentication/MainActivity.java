@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     private DatabaseReference RootRef;
-    String CurrentUserId;
+    String currentUserId;
 
 
 
@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            CurrentUserId =firebaseAuth.getCurrentUser().getUid();
-                            RootRef.child("Users").child(CurrentUserId).setValue("");
+                            currentUserId =firebaseAuth.getCurrentUser().getUid();
+                            RootRef.child("users").child(currentUserId).setValue("");
                             Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
                             if(selectedId == R.id.rb_teacher) {
                                 Intent i=new Intent(MainActivity.this,TeacherChatActivity.class);

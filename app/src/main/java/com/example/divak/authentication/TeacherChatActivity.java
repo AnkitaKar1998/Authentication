@@ -38,39 +38,43 @@ public class TeacherChatActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.send_button);
         message = findViewById(R.id.et_message);
         teacherChatSection = findViewById(R.id.ll_teacher_chat_section);
-        if(getIntent().hasExtra("Department")) {
+        if (getIntent().hasExtra("Department")) {
             Intent intent = getIntent();
             Gname = intent.getStringExtra("Department");
 
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String msg = message.getText().toString();
-                message.getText().clear();
-                TextView textView = new TextView(TeacherChatActivity.this);
-                LinearLayout.LayoutParams txtlayParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                textView.setLayoutParams(txtlayParams);
-                txtlayParams.setMargins(5,5,5,5);
-                textView.setPadding(5,5,5,5);
-                textView.setTextSize(20);
-                textView.setText(msg);
-                textView.setBackgroundColor(Color.parseColor("#f2f2f2"));
-                textView.setGravity(Gravity.CENTER);
-                teacherChatSection.addView(textView);
-                String id=mDatabase.push().getKey();
-                mDatabase.child("groups").child(Gname).child(id).setValue(msg);
-                final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollView));
-                scrollview.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollview.fullScroll(ScrollView.FOCUS_DOWN);
-                    }
-                });
-            }
-        });
+            sendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String msg = message.getText().toString();
+                    message.getText().clear();
+                    TextView textView = new TextView(TeacherChatActivity.this);
+                    LinearLayout.LayoutParams txtlayParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    textView.setLayoutParams(txtlayParams);
+                    txtlayParams.setMargins(5, 5, 5, 5);
+                    textView.setPadding(5, 5, 5, 5);
+                    textView.setTextSize(20);
+                    textView.setText(msg);
+                    textView.setBackgroundColor(Color.parseColor("#f2f2f2"));
+                    textView.setGravity(Gravity.CENTER);
+                    teacherChatSection.addView(textView);
+                    String id = mDatabase.push().getKey();
+                    mDatabase.child("groups").child(Gname).child(id).setValue(msg);
+                    final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollView));
+                    scrollview.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollview.fullScroll(ScrollView.FOCUS_DOWN);
+                        }
+                    });
+                }
+            });
+
+        }
 
     }
+    
+
 
     @Override
     protected void onStart() {
@@ -108,5 +112,5 @@ public class TeacherChatActivity extends AppCompatActivity {
             }
         });
     }
-}
+
 }
