@@ -48,15 +48,12 @@ public class TeacherChatActivity extends AppCompatActivity {
                 String msg = message.getText().toString();
                 message.getText().clear();
                 TextView textView = new TextView(TeacherChatActivity.this);
-                LinearLayout.LayoutParams txtlayParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                textView.setLayoutParams(txtlayParams);
-                txtlayParams.setMargins(5,5,5,5);
-                textView.setPadding(5,5,5,5);
-                textView.setTextSize(20);
                 textView.setText(msg);
-                textView.setBackgroundColor(Color.parseColor("#f2f2f2"));
-                textView.setGravity(Gravity.CENTER);
+
+                setDesign(textView);
+
                 teacherChatSection.addView(textView);
+
                 String id=mDatabase.push().getKey();
                 mDatabase.child("groups").child(Gname).child(id).setValue(msg);
                 final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollView));
@@ -82,14 +79,10 @@ public class TeacherChatActivity extends AppCompatActivity {
                     String msg=data.getValue(String.class);
                     Log.d("msg","messages in the activity from firebase: "+msg);
                     TextView textView = new TextView(TeacherChatActivity.this);
-                    LinearLayout.LayoutParams txtlayParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    textView.setLayoutParams(txtlayParams);
-                    txtlayParams.setMargins(5,5,5,5);
-                    textView.setPadding(5,5,5,5);
-                    textView.setTextSize(20);
                     textView.setText(msg);
-                    textView.setBackgroundColor(Color.parseColor("#f2f2f2"));
-                    textView.setGravity(Gravity.CENTER);
+
+                    setDesign(textView);
+
                     teacherChatSection.addView(textView);
                     final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollView));
                     scrollview.post(new Runnable() {
@@ -106,5 +99,16 @@ public class TeacherChatActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void setDesign(TextView textView) {
+        LinearLayout.LayoutParams txtlayParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        txtlayParams.gravity = Gravity.CENTER;
+        txtlayParams.setMargins(50,20,50,20);
+        textView.setLayoutParams(txtlayParams);
+        textView.setPadding(20,20,20,20);
+        textView.setTextSize(20);
+        textView.setTextColor(Color.parseColor("#000000"));
+        textView.setBackgroundColor(Color.parseColor("#FFCDDEFF"));
     }
 }

@@ -31,7 +31,8 @@
 
         <activity android:name=".ResetActivity" />
         <activity android:name=".StudentActivity" />
-        <activity android:name=".TeacherChatActivity"/>
+        <activity android:name=".TeacherChatActivity" />
+        <activity android:name=".empty"></activity>
     </application>
 
 </manifest>
