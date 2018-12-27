@@ -37,28 +37,31 @@ public class TeacherChatActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.send_button);
         message = findViewById(R.id.et_message);
         teacherChatSection = findViewById(R.id.ll_teacher_chat_section);
+        if(getIntent().hasExtra("Department")) {
+            Intent intent = getIntent();
+            Gname = intent.getStringExtra("Department");
 
-        Intent intent=getIntent();
-        Gname=intent.getStringExtra("Gname");
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String msg = message.getText().toString();
-                message.getText().clear();
+            sendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String msg = message.getText().toString();
+                    message.getText().clear();
 
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                TextView textView = new TextView(TeacherChatActivity.this);
-                textView.setText(msg);
-                textView.setBackgroundColor(Color.parseColor("#f4ccc1"));
-                params.setMargins(10,10,10,10);
-                params.gravity = Gravity.CENTER;
-                textView.setLayoutParams(params);
-                teacherChatSection.addView(textView);
-                String id=mDatabase.push().getKey();
-                mDatabase.child("groups").child(Gname).child(id).setValue(msg);
-            }
-        });
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    TextView textView = new TextView(TeacherChatActivity.this);
+                    textView.setText(msg);
+                    textView.setBackgroundColor(Color.parseColor("#f4ccc1"));
+                    params.setMargins(10, 10, 10, 10);
+                    params.gravity = Gravity.CENTER;
+                    textView.setLayoutParams(params);
+                    teacherChatSection.addView(textView);
+                    String id = mDatabase.push().getKey();
+                    mDatabase.child("groups").child(Gname).child(id).setValue(msg);
+                }
+            });
+
+        }
 
     }
 
