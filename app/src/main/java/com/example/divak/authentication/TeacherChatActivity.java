@@ -41,6 +41,8 @@ public class TeacherChatActivity extends AppCompatActivity {
         if (getIntent().hasExtra("Department")) {
             Intent intent = getIntent();
             Gname = intent.getStringExtra("Department");
+        }
+
 
 
             sendButton.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +74,8 @@ public class TeacherChatActivity extends AppCompatActivity {
 
         }
 
-    }
-    
+
+
 
 
     @Override
