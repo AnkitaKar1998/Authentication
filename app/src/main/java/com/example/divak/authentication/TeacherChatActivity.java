@@ -38,9 +38,12 @@ public class TeacherChatActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.send_button);
         message = findViewById(R.id.et_message);
         teacherChatSection = findViewById(R.id.ll_teacher_chat_section);
+        if (getIntent().hasExtra("Department")) {
+            Intent intent = getIntent();
+            Gname = intent.getStringExtra("Department");
+        }
 
-        Intent intent=getIntent();
-        Gname=intent.getStringExtra("Gname");
+
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override

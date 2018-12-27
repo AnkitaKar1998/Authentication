@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         user = firebaseAuth.getCurrentUser();
 
         RootRef = FirebaseDatabase.getInstance().getReference();
-        tearef = FirebaseDatabase.getInstance().getReference().child("users").child("teachers");
      /*   btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
 //                                }
 //                            });
                             Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
-                           if(selectedId == R.id.rb_teacher) {
-                                Intent i=new Intent(MainActivity.this,TeacherActivity.class);
+                            if(selectedId == R.id.rb_teacher) {
+                                Intent i=new Intent(MainActivity.this,TeacherChatActivity.class);
                                 startActivity(i);
                             } else {
                                 Intent i=new Intent(MainActivity.this,StudentActivity.class);
