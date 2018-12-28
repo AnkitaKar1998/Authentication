@@ -34,13 +34,13 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
         for(int i=0;i<=10;i++){
             Listitem listItem = new Listitem(
-                    "Heading" + i+1,
+                    "Heading " + (i+1),
                     "Dummy text"
             );
             listItems.add(listItem);
         }
-//        adapter = new TnAdapter(listItems,this);
-//        recyclerView.setAdapter(adapter);
+        adapter = new TnAdapter(listItems,this);
+        recyclerView.setAdapter(adapter);
     }
 
 
@@ -62,7 +62,5 @@ public class RecyclerViewActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
-
-
     }
 }
