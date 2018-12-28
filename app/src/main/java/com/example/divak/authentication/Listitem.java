@@ -17,11 +17,4 @@ public class Listitem {
         return desc;
     }
 
-    public void setHead(String head) {
-        this.head = head;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
 }
