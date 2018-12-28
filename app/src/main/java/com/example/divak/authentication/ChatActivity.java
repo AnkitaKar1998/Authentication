@@ -1,12 +1,11 @@
 package com.example.divak.authentication;
 
-import android.app.ActionBar;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,25 +21,34 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class TeacherChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity {
 
     Button sendButton;
     EditText message;
-    LinearLayout teacherChatSection;
-    String Gname;
+    LinearLayout teacherChatSection,secondLayout;
+    String Gname,loginType;
     private DatabaseReference mDatabase =FirebaseDatabase.getInstance().getReference();
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_chat);
+        sharedPreferences=getSharedPreferences("mydata",MODE_PRIVATE);
 
+        secondLayout=findViewById(R.id.ll_second_section);
         sendButton = findViewById(R.id.send_button);
         message = findViewById(R.id.et_message);
         teacherChatSection = findViewById(R.id.ll_teacher_chat_section);
         if (getIntent().hasExtra("Department")) {
             Intent intent = getIntent();
             Gname = intent.getStringExtra("Department");
+        }
+
+        if(sharedPreferences.getString("type","").equals("student")){
+            secondLayout.setVisibility(View.GONE);
+        }else {
+            secondLayout.setVisibility(View.VISIBLE);
         }
 
 
@@ -50,7 +58,7 @@ public class TeacherChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String msg = message.getText().toString();
                 message.getText().clear();
-                TextView textView = new TextView(TeacherChatActivity.this);
+                TextView textView = new TextView(ChatActivity.this);
                 textView.setText(msg);
 
                 setDesign(textView);
@@ -80,8 +88,7 @@ public class TeacherChatActivity extends AppCompatActivity {
                 teacherChatSection.removeAllViews();
                 for(DataSnapshot data : dataSnapshot.getChildren()){
                     String msg=data.getValue(String.class);
-                    Log.d("msg","messages in the activity from firebase: "+msg);
-                    TextView textView = new TextView(TeacherChatActivity.this);
+                    TextView textView = new TextView(ChatActivity.this);
                     textView.setText(msg);
 
                     setDesign(textView);
