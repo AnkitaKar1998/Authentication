@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final int selectedId = loginAs.getCheckedRadioButtonId();
                 String e=etEmail.getText().toString();
                 String p=etPassword.getText().toString();
                 firebaseAuth.signInWithEmailAndPassword(e,p).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -105,12 +104,13 @@ public class MainActivity extends AppCompatActivity {
                                         startActivity(i);
                                     } else {
                                         //Go to NormalMemberActivity
-                                        department=dataSnapshot.child("department").getValue(String.class);
-                                        Intent i=new Intent(MainActivity.this,ChatActivity.class);
-                                        i.putExtra("Department",department);
+                                        String department=dataSnapshot.child("department").getValue(String.class);
+                                        Intent i=new Intent(MainActivity.this,RecyclerViewActivity.class);
                                         startActivity(i);
                                     }
                                     editor.putString("type",type);
+                                    editor.apply();
+                                    editor.putString("Department",department);
                                     Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
                                     finish();
                                 }
@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("msg","dep in on start main: "+department);
         if((user!=null))
         {
             if(sharedPreferences.getString("type","").equals("teacher")){
@@ -141,8 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             } else {
                 //Go to NormalMemberActivity
-                Intent i=new Intent(MainActivity.this,ChatActivity.class);
-                i.putExtra("Department",department);
+                Intent i=new Intent(MainActivity.this,RecyclerViewActivity.class);
                 startActivity(i);
             }
             finish();

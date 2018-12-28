@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,9 @@ public class ChatActivity extends AppCompatActivity {
             Gname = intent.getStringExtra("Department");
         }
 
+        Log.d("msg","type in chat:"+sharedPreferences.getString("type",""));
         if(sharedPreferences.getString("type","").equals("student")){
+            Gname=sharedPreferences.getString("Department","");
             secondLayout.setVisibility(View.GONE);
         }else {
             secondLayout.setVisibility(View.VISIBLE);

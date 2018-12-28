@@ -31,6 +31,7 @@
 
         <activity android:name=".ResetActivity" />
         <activity android:name=".ChatActivity" />
+        <activity android:name=".RecyclerViewActivity"/>
 
     </application>
 

@@ -70,15 +70,11 @@ public class TeacherActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-
-        if (item.getItemId() == R.id.menuCreateGroup) {
-            Toast.makeText(this, "Developed By Divakar Pandey", Toast.LENGTH_SHORT).show();
-        }
-
         if (item.getItemId() == R.id.menuLogout) {
             firebaseAuth.signOut();
             Intent i=new Intent(TeacherActivity.this,MainActivity.class);
             startActivity(i);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
