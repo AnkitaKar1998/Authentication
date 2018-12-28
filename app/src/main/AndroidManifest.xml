@@ -32,7 +32,8 @@
         <activity android:name=".ResetActivity" />
         <activity android:name=".StudentActivity" />
         <activity android:name=".TeacherChatActivity" />
-        <activity android:name=".empty"></activity>
+        <activity android:name=".empty" />
+        <activity android:name=".RecyclerViewActivity"></activity>
     </application>
 
 </manifest>

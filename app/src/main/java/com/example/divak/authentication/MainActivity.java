@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Iterator;
@@ -36,8 +37,10 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser user;
     private DatabaseReference RootRef;
     private DatabaseReference tearef;
+    private DatabaseReference rootRef;
     String CurrentUserId;
     String a;
+    DatabaseReference root;
 
 
 
@@ -88,7 +91,27 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            CurrentUserId =firebaseAuth.getCurrentUser().getUid();
+                            CurrentUserId =firebaseAuth.getCurrentUser().getEmail();
+                           // Log.d()
+                            rootRef = FirebaseDatabase.getInstance().getReference();
+                            Query query = rootRef.child("users").child("students").orderByChild("email").equalTo(CurrentUserId);
+                            ValueEventListener valueEventListener = new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Log.d("kal", "a");
+                                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        String key = ds.getKey();
+                                        Log.d("kal", key);
+                                        Log.d("kal",String.valueOf(root));
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Log.d("div", databaseError.getMessage());
+                                }
+                            };
+                            query.addListenerForSingleValueEvent(valueEventListener);
 //                            tearef.addValueEventListener(new ValueEventListener() {
 //                                @Override
 //                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
