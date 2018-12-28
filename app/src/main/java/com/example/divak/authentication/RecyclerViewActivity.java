@@ -26,6 +26,21 @@ public class RecyclerViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view);
         firebaseAuth=FirebaseAuth.getInstance();
+
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        listItems = new ArrayList<>();
+
+        for(int i=0;i<=10;i++){
+            Listitem listItem = new Listitem(
+                    "Heading" + i+1,
+                    "Dummy text"
+            );
+            listItems.add(listItem);
+        }
+//        adapter = new TnAdapter(listItems,this);
+//        recyclerView.setAdapter(adapter);
     }
 
 
@@ -48,19 +63,6 @@ public class RecyclerViewActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
 
-        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        listItems = new ArrayList<>();
 
-        for(int i=0;i<=10;i++){
-            Listitem listItem = new Listitem(
-                    "Heading" + i+1,
-                    "Dummy text"
-            );
-            listItems.add(listItem);
-        }
-        adapter = new TnAdapter(listItems,this);
-        recyclerView.setAdapter(adapter);
     }
 }
