@@ -30,9 +30,9 @@
             android:resource="@color/colorAccent" />
 
         <activity android:name=".ResetActivity" />
-        <activity android:name=".StudentActivity" />
-        <activity android:name=".TeacherChatActivity" />
-        <activity android:name=".empty"></activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".RecyclerViewActivity"/>
+
     </application>
 
 </manifest>

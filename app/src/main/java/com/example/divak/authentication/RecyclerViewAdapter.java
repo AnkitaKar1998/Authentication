@@ -41,7 +41,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //        holder.textView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                Intent i = new Intent(context,TeacherChatActivity.class);
+//                Intent i = new Intent(context,ChatActivity.class);
 //                i.putExtra("Department",item[position]);
 //                context.startActivity(i);
 //            }

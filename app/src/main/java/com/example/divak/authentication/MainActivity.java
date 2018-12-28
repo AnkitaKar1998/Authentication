@@ -1,6 +1,7 @@
 package com.example.divak.authentication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,9 +21,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,8 +36,9 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser user;
     private DatabaseReference RootRef;
     private DatabaseReference tearef;
-    String CurrentUserId;
-    String a;
+    String CurrentUserId,department;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
 
 
@@ -54,9 +55,11 @@ public class MainActivity extends AppCompatActivity {
         btnReset =(Button)findViewById(R.id.btnReset);
         etEmail =(EditText)findViewById(R.id.etEmail);
         etPassword =(EditText)findViewById(R.id.etPassword);
-        loginAs = (RadioGroup) findViewById(R.id.rg_loginAs);
 
-        //firebase part
+        sharedPreferences=getSharedPreferences("mydata",MODE_PRIVATE);
+        editor=sharedPreferences.edit();
+
+        //firebase path
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
@@ -81,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final int selectedId = loginAs.getCheckedRadioButtonId();
                 String e=etEmail.getText().toString();
                 String p=etPassword.getText().toString();
                 firebaseAuth.signInWithEmailAndPassword(e,p).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -89,48 +91,37 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             CurrentUserId =firebaseAuth.getCurrentUser().getUid();
-//                            tearef.addValueEventListener(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                    Iterator iterator =dataSnapshot.getChildren().iterator();
-//                                    Log.d("ankita", "123");
-//                                    while(iterator.hasNext())
-//                                    {
-//                                        String a=((DataSnapshot)iterator.next()).getKey();
-//                                        Log.d("ankita", a);
-//                                        if(CurrentUserId.equals(a))
-//                                        {
-//                                            Log.d("ankita","matched");
-//                                            Intent i=new Intent(MainActivity.this,TeacherActivity.class);
-//                                            startActivity(i);
-//                                        }
-//                                        else
-//                                        {
-//                                            Log.d("ankita","not matched");
-//                                            Intent i=new Intent(MainActivity.this,StudentActivity.class);
-//                                            startActivity(i);
-//                                        }
-//                                    }
-//                                    Log.d("ankita", "456");
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                }
-//                            });
-                            Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
-                            if(selectedId == R.id.rb_teacher) {
-                                Intent i=new Intent(MainActivity.this,TeacherActivity.class);
-                                startActivity(i);
-                            } else {
-                                Intent i=new Intent(MainActivity.this,StudentActivity.class);
-                                startActivity(i);
-                            }
-                            finish();
+                            Log.d("msg","currentUser:"+ CurrentUserId);
+                            Query userQuery = RootRef.child("users").child(CurrentUserId);
+                            userQuery.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String type = dataSnapshot.child("type").getValue(String.class);
+                                    Log.d("msg","type="+type);
+                                    if(type.equals("teacher")){
+                                        //Go to TeacherMemberActivity
+                                        Intent i=new Intent(MainActivity.this,TeacherActivity.class);
+                                        startActivity(i);
+                                    } else {
+                                        //Go to NormalMemberActivity
+                                        String department=dataSnapshot.child("department").getValue(String.class);
+                                        Intent i=new Intent(MainActivity.this,RecyclerViewActivity.class);
+                                        startActivity(i);
+                                    }
+                                    editor.putString("type",type);
+                                    editor.apply();
+                                    editor.putString("Department",department);
+                                    Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                         }
-                        else
-                        {
+                        else {
                             Toast.makeText(MainActivity.this, "Issue: "+task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -142,10 +133,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("msg","dep in on start main: "+department);
         if((user!=null))
         {
-            Intent i=new Intent(MainActivity.this,TeacherActivity.class);
-            startActivity(i);
+            if(sharedPreferences.getString("type","").equals("teacher")){
+                //Go to TeacherMemberActivity
+                Intent i=new Intent(MainActivity.this,TeacherActivity.class);
+                startActivity(i);
+            } else {
+                //Go to NormalMemberActivity
+                Intent i=new Intent(MainActivity.this,RecyclerViewActivity.class);
+                startActivity(i);
+            }
             finish();
         }
     }
