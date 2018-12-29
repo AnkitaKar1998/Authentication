@@ -1,46 +1,63 @@
 package com.example.divak.authentication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONObject;
 
 public class RecyclerViewActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-
-    private List<Listitem> listItems;
+    ArrayList<String> teacherId=new ArrayList<>();
+    ArrayList<String> teachersName=new ArrayList<>();
+    ArrayList<ModelForMessage> teachermsg=new ArrayList<>();
+    ArrayList<Listitem> listItems=new ArrayList<>();
+    DatabaseReference reference= FirebaseDatabase.getInstance().getReference();
+    Context context;
+    TnAdapter.ClickListner clickListner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view);
         firebaseAuth=FirebaseAuth.getInstance();
-
+        context=RecyclerViewActivity.this;
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        listItems = new ArrayList<>();
 
-        for(int i=0;i<=10;i++){
-            Listitem listItem = new Listitem(
-                    "Heading " + (i+1),
-                    "Dummy text"
-            );
-            listItems.add(listItem);
-        }
-        adapter = new TnAdapter(listItems,this);
-        recyclerView.setAdapter(adapter);
+        clickListner=new TnAdapter.ClickListner() {
+            @Override
+            public void onChatClick(int position) {
+                Intent intent=new Intent(context,ChatActivity.class);
+                intent.putExtra("teacherId",teacherId.get(position));
+                startActivity(intent);
+            }
+        };
+
     }
 
 
@@ -62,5 +79,76 @@ public class RecyclerViewActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        teachersName.clear();
+        teacherId.clear();
+        teachermsg.clear();
+        listItems.clear();
+        Log.d("msg","Department in rec on start:"+getSharedPreferences("mydata",MODE_PRIVATE).getString("Department",""));
+        reference.child("groups").child(getSharedPreferences("mydata",MODE_PRIVATE).getString("Department","")).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                int j=0;
+                for (DataSnapshot data: dataSnapshot.getChildren()){
+                    String key=data.getKey();
+                    teacherId.add(key);
+
+                    Iterator iterator=dataSnapshot.child(data.getKey()).getChildren().iterator();
+                    ArrayList<String> messages=new ArrayList<>();
+                    while (iterator.hasNext()){
+                        messages.add((String) ((DataSnapshot)iterator.next()).getValue());
+                    }
+                    ModelForMessage modelForMessage=new ModelForMessage();
+                    modelForMessage.setMsg(messages);
+                    teachermsg.add(modelForMessage);
+
+                    if (!key.equals("")){
+                        Log.d("msg","in if");
+                        Query userQuery = FirebaseDatabase.getInstance().getReference("users")
+                                .child(key);
+                        userQuery.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Log.d("msg","getting name: "+dataSnapshot.child("name").getValue(String.class));
+                                teachersName.add(dataSnapshot.child("name").getValue(String.class));
+                                Log.d("msg","names: "+teachersName);
+                                if(teachersName.size()==teacherId.size()){
+                                    for(int i=0;i<=teacherId.size()-1;i++){
+
+                                        Listitem listItem = new Listitem(
+                                                teachersName.get(i), teachermsg.get(i).getMsg().get(teachermsg.get(i).getMsg().size()-1)
+                                        );
+                                        listItems.add(listItem);
+                                        adapter = new TnAdapter(listItems,context,clickListner);
+                                        recyclerView.setAdapter(adapter);
+                                    }
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                    j++;
+
+                    Log.d("msg","j value:"+j);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

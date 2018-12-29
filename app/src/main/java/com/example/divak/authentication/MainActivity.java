@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     String type = dataSnapshot.child("type").getValue(String.class);
+                                    String name=dataSnapshot.child("name").getValue(String.class);
                                     Log.d("msg","type="+type);
                                     if(type.equals("teacher")){
                                         //Go to TeacherMemberActivity
@@ -104,13 +105,16 @@ public class MainActivity extends AppCompatActivity {
                                         startActivity(i);
                                     } else {
                                         //Go to NormalMemberActivity
-                                        String department=dataSnapshot.child("department").getValue(String.class);
+                                        department=dataSnapshot.child("department").getValue(String.class);
                                         Intent i=new Intent(MainActivity.this,RecyclerViewActivity.class);
                                         startActivity(i);
                                     }
                                     editor.putString("type",type);
                                     editor.apply();
                                     editor.putString("Department",department);
+                                    editor.apply();
+                                    editor.putString("name",name);
+                                    editor.apply();
                                     Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
                                     finish();
                                 }
