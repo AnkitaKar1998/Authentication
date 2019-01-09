@@ -40,12 +40,28 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_message"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:hint="Type here"
-            android:layout_weight="8"/>
+            android:layout_weight="8"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_message"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.85"
+                android:hint="Type here" />
+
+            <ImageView
+                android:id="@+id/attach_iv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.15"
+                android:src="@drawable/ic_attachment_black_30dp"
+                android:layout_gravity="end|center_vertical"/>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/send_button"
