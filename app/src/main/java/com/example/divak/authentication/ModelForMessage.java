@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class ModelForMessage {
 
-    ArrayList<String> msg;
+    ArrayList<ModelForSingleMsg> msg;
     String teacherId,teacherName;
 
     public String getTeacherId() {
@@ -23,11 +23,11 @@ public class ModelForMessage {
         this.teacherName = teacherName;
     }
 
-    public ArrayList<String> getMsg() {
+    public ArrayList<ModelForSingleMsg> getMsg() {
         return msg;
     }
 
-    public void setMsg(ArrayList<String> msg) {
+    public void setMsg(ArrayList<ModelForSingleMsg> msg) {
         this.msg = msg;
     }
 

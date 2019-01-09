@@ -160,7 +160,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
                     String teacherName= data.child("teacherName").getValue(String.class);
                     String teacherId=data.child("teacherId").getValue(String.class);
                     ModelForMessage modelForMessage=data.getValue(ModelForMessage.class);
-                    Log.d("msg","data:"+modelForMessage.getMsg());
+                    Log.d("msg","data:"+modelForMessage.getMsg().get(0).getMsg());
                     teacherIdList.add(teacherId);
                     teachersNameList.add(teacherName);
                     Listitem listItem = new Listitem(

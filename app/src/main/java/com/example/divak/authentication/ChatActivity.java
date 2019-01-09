@@ -52,6 +52,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
@@ -73,6 +74,7 @@ public class ChatActivity extends AppCompatActivity {
     ImageView attach;
     FirebaseStorage storage;
     boolean upStatus;
+    ArrayList<ModelForSingleMsg> msgList=new ArrayList<>();
 
 
     @Override
@@ -124,11 +126,16 @@ public class ChatActivity extends AppCompatActivity {
                 String id=mDatabase.push().getKey();
                 ModelForSingleMsg object=new ModelForSingleMsg();
                 object.setMsg(msg);
-                object.setSenderName(sharedPreferences.getString("name",""));
                 object.setMsgType("text");
-                mDatabase.child("groups").child(Gname).child(currentChatID).child("teacherId").setValue(currentChatID);
-                mDatabase.child("groups").child(Gname).child(currentChatID).child("teacherName").setValue(sharedPreferences.getString("name",""));
-                mDatabase.child("groups").child(Gname).child(currentChatID).child("messages").child(id).setValue(object);
+                msgList.add(object);
+                ModelForMessage modelForMessage=new ModelForMessage();
+                modelForMessage.setMsg(msgList);
+                modelForMessage.setTeacherId(currentChatID);
+                modelForMessage.setTeacherName(sharedPreferences.getString("name",""));
+//                mDatabase.child("groups").child(Gname).child(currentChatID).child("teacherId").setValue(currentChatID);
+//                mDatabase.child("groups").child(Gname).child(currentChatID).child("teacherName").setValue(sharedPreferences.getString("name",""));
+//                mDatabase.child("groups").child(Gname).child(currentChatID).child("messages").child(id).setValue(object);
+                mDatabase.child("groups").child(Gname).child(currentChatID).setValue(modelForMessage);
                 final ScrollView scrollview = ((ScrollView) findViewById(R.id.scrollView));
                 scrollview.post(new Runnable() {
                     @Override
@@ -195,7 +202,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mDatabase.child("groups").child(Gname).child(currentChatID).child("messages").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("groups").child(Gname).child(currentChatID).child("msg").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 teacherChatSection.removeAllViews();
@@ -204,7 +211,7 @@ public class ChatActivity extends AppCompatActivity {
                     ModelForSingleMsg det=data.getValue(ModelForSingleMsg.class);
                     if (det.getMsgType().equals("text")){
                         TextView textView = new TextView(ChatActivity.this);
-                        String msg=det.getSenderName()+":\n"+det.getMsg();
+                        String msg=det.getMsg();
                         textView.setText(msg);
                         setDesign(textView);
                         teacherChatSection.addView(textView);
@@ -393,12 +400,14 @@ public class ChatActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
                     String id=mDatabase.push().getKey();
-                    Log.d("msg","uri:"+downloadUri);
                     ModelForSingleMsg object=new ModelForSingleMsg();
                     object.setMsg(downloadUri.getLastPathSegment().toString());
-                    object.setSenderName(sharedPreferences.getString("name",""));
                     object.setMsgType("media");
-                    mDatabase.child("groups").child(Gname).child(currentChatID).child("messages").child(id).setValue(object);
+                    msgList.add(object);
+                    ModelForMessage modelForMessage=new ModelForMessage();
+                    modelForMessage.setMsg(msgList);
+                    modelForMessage.setTeacherId(currentChatID);
+                    mDatabase.child("groups").child(Gname).child(currentChatID).setValue(modelForMessage);
                     Log.d("msg","task success");
 
                 } else {

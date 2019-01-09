@@ -1,7 +1,7 @@
 package com.example.divak.authentication;
 
 public class ModelForSingleMsg {
-    String msg,msgType,senderName;
+    String msg,msgType;
 
     public String getMsg() {
         return msg;
@@ -17,13 +17,5 @@ public class ModelForSingleMsg {
 
     public void setMsgType(String msgType) {
         this.msgType = msgType;
-    }
-
-    public String getSenderName() {
-        return senderName;
-    }
-
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
     }
 }
